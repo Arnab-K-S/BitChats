@@ -1,5 +1,5 @@
 import DefaultLayout from "@/layouts/default";
-import Login from "@/components/loginpage/loginPage";
+import Login from "@/components/auth/loginPage";
 export default function DocsPage() {
   return (
     <DefaultLayout>
