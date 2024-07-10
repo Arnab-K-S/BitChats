@@ -3,13 +3,6 @@ import { Card, Input } from "@nextui-org/react";
 import { Button } from "@nextui-org/button";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import { Link } from "@nextui-org/link";
-import { Snippet } from "@nextui-org/snippet";
-import { Code } from "@nextui-org/code";
-import { button as buttonStyles } from "@nextui-org/theme";
-import { siteConfig } from "@/config/site";
-import { GithubIcon } from "@/components/icons";
-import DefaultLayout from "@/layouts/default";
 import axios from 'axios';
 
 interface FormData {
@@ -137,45 +130,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
     <div>
       <ToastContainer />
       {LoggedIn ? (
-         <DefaultLayout>
-         <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
-           <div className="inline-block max-w-lg text-center justify-center"></div>
-
-           <div className="flex gap-3">
-             <Link
-               isExternal
-               className={buttonStyles({
-                 color: "primary",
-                 radius: "full",
-                 variant: "shadow",
-               })}
-               href={siteConfig.links.docs}
-             >
-               Documentation
-             </Link>
-             <Link
-               isExternal
-               className={buttonStyles({
-                 variant: "bordered",
-                 radius: "full",
-               })}
-               href={siteConfig.links.github}
-             >
-               <GithubIcon size={20} />
-               GitHub
-             </Link>
-           </div>
-
-           <div className="mt-8">
-             <Snippet hideCopyButton hideSymbol variant="bordered">
-               <span>
-                 Get started by editing{" "}
-                 <Code color="primary">pages/index.tsx</Code>
-               </span>
-             </Snippet>
-           </div>
-         </section>
-       </DefaultLayout>
+        <div>Welcome back! You are logged in.</div>
       ) : (
         newUser ? (
           <Card className="h-full w-80 p-10 shadow-xl border" isBlurred>

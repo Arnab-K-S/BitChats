@@ -6,20 +6,15 @@ const app = express();
 const port = process.env.PORT || 3000;
 const userRoutes=require('./routes/userRoutes')
 const {notFound, errorHandler} = require('./middleware/errorMiddleware');
-
+const cors = require('cors');
 dotenv.config();
 connectDB();
-
+app.use(cors());
 app.use(express.json());
+app.use('/api/user',userRoutes)
+
 app.use(notFound);
 app.use(errorHandler);
-
-
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
-
-app.use('/api/user',userRoutes)
 
 
 app.listen(port, () => {
