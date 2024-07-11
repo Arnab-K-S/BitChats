@@ -1,16 +1,12 @@
-import React, { useState,useEffect, ChangeEvent } from "react";
-import { Card, Input } from "@nextui-org/react";
-import { Button } from "@nextui-org/button";
+import React, { useState, useEffect, ChangeEvent } from "react";
 import { ToastContainer, toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
-import { Link } from "@nextui-org/link";
-import { Snippet } from "@nextui-org/snippet";
-import { Code } from "@nextui-org/code";
-import { button as buttonStyles } from "@nextui-org/theme";
-import { siteConfig } from "@/config/site";
-import { GithubIcon } from "@/components/icons";
+import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
+import { ThemeSwitch } from "@/components/theme-switch";
+import Home from "@/components/Home/home";
 import DefaultLayout from "@/layouts/default";
-import axios from 'axios';
+import AuthForm from "./authForm";
+import { Spinner } from "@nextui-org/react";
 
 interface FormData {
   name: string;
@@ -20,13 +16,14 @@ interface FormData {
 }
 
 interface LoginFormProps {
-  onLoginSuccess: () => void; 
+  onLogin: () => void;
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => { 
+const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
   const [newUser, setNewUser] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const [LoggedIn, setLoggedIn] = useState<boolean>(false); 
+  const [pageloading, setPageLoading] = useState<boolean>(true);
+  const [loggedIn, setLoggedIn] = useState<boolean>(false);
 
   const [formData, setFormData] = useState<FormData>({
     name: "",
@@ -35,12 +32,14 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
     confirmPassword: "",
   });
 
-  const isLoggedIn = Boolean(localStorage.getItem("userInfo")); 
-
-  
+  const isLoggedIn = Boolean(localStorage.getItem("userInfo"));
+  const userLogin=() => {
+    setLoggedIn(isLoggedIn);
+    setPageLoading(false);
+  }
   useEffect(() => {
     setLoggedIn(isLoggedIn);
-  }, [isLoggedIn]);
+  }, [isLoggedIn,localStorage.getItem("userInfo")]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -83,11 +82,15 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
             "Content-Type": "application/json",
           },
         };
-        const { data } = await axios.post("http://localhost:3000/api/user", registrationData, config);
+        const { data } = await axios.post(
+          "http://localhost:3000/api/user",
+          registrationData,
+          config
+        );
         console.log(data);
         toast.success("Registration Successful");
         localStorage.setItem("userInfo", JSON.stringify(data));
-        setLoggedIn(true); 
+        setLoggedIn(true);
       } catch (error: any) {
         console.error("Error:", error.response || error.message);
         toast.error(`Error Occurred! ${error.response?.data?.message || error.message}`);
@@ -95,7 +98,6 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
         setLoading(false);
       }
     } else {
-      
       const loginData = {
         email: formData.email,
         password: formData.password,
@@ -108,12 +110,16 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
             "Content-Type": "application/json",
           },
         };
-        const { data } = await axios.post("http://localhost:3000/api/user/login", loginData, config);
+        const { data } = await axios.post(
+          "http://localhost:3000/api/user/login",
+          loginData,
+          config
+        );
         console.log(data);
         toast.success("Login Successful");
         localStorage.setItem("userInfo", JSON.stringify(data));
-        setLoggedIn(true); 
-        onLoginSuccess(); 
+        setLoggedIn(true);
+        onLogin();
       } catch (error: any) {
         console.error("Error:", error.response || error.message);
         toast.error(`Error Occurred! ${error.response?.data?.message || error.message}`);
@@ -133,145 +139,33 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
     });
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("userInfo");
+    setLoggedIn(false);
+  };
+
   return (
     <div>
       <ToastContainer />
-      {LoggedIn ? (
-         <DefaultLayout>
-         <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
-           <div className="inline-block max-w-lg text-center justify-center"></div>
-
-           <div className="flex gap-3">
-             <Link
-               isExternal
-               className={buttonStyles({
-                 color: "primary",
-                 radius: "full",
-                 variant: "shadow",
-               })}
-               href={siteConfig.links.docs}
-             >
-               Documentation
-             </Link>
-             <Link
-               isExternal
-               className={buttonStyles({
-                 variant: "bordered",
-                 radius: "full",
-               })}
-               href={siteConfig.links.github}
-             >
-               <GithubIcon size={20} />
-               GitHub
-             </Link>
-           </div>
-
-           <div className="mt-8">
-             <Snippet hideCopyButton hideSymbol variant="bordered">
-               <span>
-                 Get started by editing{" "}
-                 <Code color="primary">pages/index.tsx</Code>
-               </span>
-             </Snippet>
-           </div>
-         </section>
-       </DefaultLayout>
+      {pageloading ? (
+        <>
+          <Spinner />
+          {userLogin()}
+        </>
       ) : (
-        newUser ? (
-          <Card className="h-full w-80 p-10 shadow-xl border" isBlurred>
-            <div className="w-full flex flex-col gap-4">
-              <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                <Input
-                  type="text"
-                  name="name"
-                  variant="underlined"
-                  label="Name"
-                  placeholder="Enter your Name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                />
+        <>
+          <div className="m-10 p-2 absolute right-2 bg-slate-200 rounded">
+                <ThemeSwitch />
               </div>
-              <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                <Input
-                  type="email"
-                  name="email"
-                  variant="underlined"
-                  label="Email"
-                  placeholder="Enter your Email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                <Input
-                  type="password"
-                  name="password"
-                  variant="underlined"
-                  label="Password"
-                  placeholder="Enter your Password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                <Input
-                  type="password"
-                  name="confirmPassword"
-                  variant="underlined"
-                  label="Confirm Password"
-                  placeholder="Confirm your Password"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <Button color="primary" variant="bordered" className="mt-5 mb-5" onClick={handleSubmit} disabled={loading}>
-                {loading ? 'Registering...' : 'Register'}
-              </Button>
-              <Button color="warning" variant="bordered" onClick={toggleNewUser} disabled={loading}>
-                Already Registered?
-              </Button>
-            </div>
-          </Card>
-        ) : (
-          <Card className="h-full w-80 p-10 shadow-xl border" isBlurred>
-            <div className="w-full flex flex-col gap-4">
-              <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                <Input
-                  type="email"
-                  name="email"
-                  variant="underlined"
-                  label="Email"
-                  placeholder="Enter your Email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                <Input
-                  type="password"
-                  name="password"
-                  variant="underlined"
-                  label="Password"
-                  placeholder="Enter your Password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <Button color="primary" variant="bordered" className="mt-5 mb-5" onClick={handleSubmit} disabled={loading}>
-                {loading ? 'Logging in...' : 'Login'}
-              </Button>
-              <Button color="warning" variant="bordered" onClick={toggleNewUser} disabled={loading}>
-                Register
-              </Button>
-            </div>
-          </Card>
-        )
+              <AuthForm
+                newUser={newUser}
+                loading={loading}
+                formData={formData}
+                handleChange={handleChange}
+                handleSubmit={handleSubmit}
+                toggleNewUser={toggleNewUser}
+              />
+        </>
       )}
     </div>
   );

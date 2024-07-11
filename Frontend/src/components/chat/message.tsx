@@ -1,9 +1,15 @@
 import React from "react";
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from "@nextui-org/react";
 
-export default function MessageBox(props) {
-    const { variant, color ,text } = props
-    const DropdownContent = ({ variant, color ,text}) => (
+interface MessageBoxProps {
+    variant: "shadow" | "bordered" | "flat" | "faded" | "solid" | "light" | undefined;
+    color:"default" | "primary" | "success" | "warning" | "secondary" | "danger" | undefined;
+    text: string;
+}
+
+const MessageBox: React.FC<MessageBoxProps> = ({ variant, color, text }) => {
+
+    const DropdownContent: React.FC<MessageBoxProps> = ({ variant, color, text }) => (
         <Dropdown>
             <DropdownTrigger>
                 <Button
@@ -19,19 +25,21 @@ export default function MessageBox(props) {
                 color={color}
                 variant={variant}
             >
-                <DropdownItem key="New">Reply </DropdownItem>
-                <DropdownItem key="Copy">Copy </DropdownItem>
-                <DropdownItem key="Edit">Edit </DropdownItem>
+                <DropdownItem key="New">Reply</DropdownItem>
+                <DropdownItem key="Copy">Copy</DropdownItem>
+                <DropdownItem key="Edit">Edit</DropdownItem>
                 <DropdownItem key="Delete" className="text-danger" color="danger">
                     Delete
                 </DropdownItem>
             </DropdownMenu>
         </Dropdown>
-    )
+    );
 
     return (
         <div className="flex flex-wrap gap-2">
-            <DropdownContent key={variant} color={color} variant={variant} text={text}/>
+            <DropdownContent variant={variant} color={color} text={text} />
         </div>
     );
 }
+
+export default MessageBox;

@@ -2,7 +2,7 @@ export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
   name: "BitsChat",
-  description: "Make beautiful websites regardless of your design experience.",
+  description: "Share codes and chat easily with your friends or team.Now Debugging is easy with BitsChat",
   navItems: [
     {
       label: "Home",
@@ -14,15 +14,11 @@ export const siteConfig = {
     },
     {
       label: "Chats",
-      href: "/pricing",
+      href: "/chats",
     },
     {
       label: "Blog",
       href: "/blog",
-    },
-    {
-      label: "Login",
-      href: "/about",
     },
   ],
   navMenuItems: [
@@ -62,6 +58,7 @@ export const siteConfig = {
   links: {
     github: "https://github.com/nextui-org/nextui",
     twitter: "https://twitter.com/getnextui",
+    chats: "/chats",
     docs: "https://nextui-docs-v2.vercel.app",
     discord: "https://discord.gg/9b6yyZKmH4",
   },

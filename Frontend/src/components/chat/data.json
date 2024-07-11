@@ -2,140 +2,140 @@
   {
     "name": "John Doe",
     "timestamp": "2022-01-01 10:00:00",
-    "message": "Hello, how are you?",
+    "content": "Hello, how are you?",
     "profilePic": "https://randomuser.me/api/portraits/men/1.jpg",
     "messageCount": 5
   },
   {
     "name": "Jane Smith",
     "timestamp": "2022-01-01 11:00:00",
-    "message": "I'm good, thanks!",
+    "content": "I'm good, thanks!",
     "profilePic": "https://randomuser.me/api/portraits/men/1.jpg",
     "messageCount": 3
   },
   {
     "name": "Alice",
     "timestamp": "2022-01-01 12:00:00",
-    "message": "Hi, how are you?",
+    "content": "Hi, how are you?",
     "profilePic": "https://randomuser.me/api/portraits/men/1.jpg",
     "messageCount": 0
   },
   {
     "name": "Bob",
     "timestamp": "2022-01-01 13:00:00",
-    "message": "I'm good, thanks!",
+    "content": "I'm good, thanks!",
     "profilePic": "https://randomuser.me/api/portraits/men/1.jpg",
     "messageCount": 0
   },
   {
     "name": "Sarah",
     "timestamp": "2022-01-01 14:00:00",
-    "message": "Hey there!",
+    "content": "Hey there!",
     "profilePic": "https://randomuser.me/api/portraits/men/1.jpg",
     "messageCount": 2
   },
   {
     "name": "Michael",
     "timestamp": "2022-01-01 15:00:00",
-    "message": "What's up?",
+    "content": "What's up?",
     "profilePic": "https://randomuser.me/api/portraits/men/1.jpg",
     "messageCount": 1
   },
   {
     "name": "Emily",
     "timestamp": "2022-01-01 16:00:00",
-    "message": "Long time no see!",
+    "content": "Long time no see!",
     "profilePic": "https://randomuser.me/api/portraits/men/1.jpg",
     "messageCount": 0
   },
   {
     "name": "David",
     "timestamp": "2022-01-01 17:00:00",
-    "message": "How's it going?",
+    "content": "How's it going?",
     "profilePic": "https://randomuser.me/api/portraits/men/1.jpg",
     "messageCount": 4
   },
   {
     "name": "Olivia",
     "timestamp": "2022-01-01 18:00:00",
-    "message": "Nice to meet you!",
+    "content": "Nice to meet you!",
     "profilePic": "https://randomuser.me/api/portraits/men/1.jpg",
     "messageCount": 0
   },
   {
     "name": "Daniel",
     "timestamp": "2022-01-01 19:00:00",
-    "message": "Hello!",
+    "content": "Hello!",
     "profilePic": "https://randomuser.me/api/portraits/men/1.jpg",
     "messageCount": 3
   },
   {
     "name": "Sophia",
     "timestamp": "2022-01-01 20:00:00",
-    "message": "How are you doing?",
+    "content": "How are you doing?",
     "profilePic": "https://example.com/profile-pic-11.jpg",
     "messageCount": 0
   },
   {
     "name": "Matthew",
     "timestamp": "2022-01-01 21:00:00",
-    "message": "I'm fine, thanks!",
+    "content": "I'm fine, thanks!",
     "profilePic": "https://example.com/profile-pic-12.jpg",
     "messageCount": 0
   },
   {
     "name": "Ava",
     "timestamp": "2022-01-01 22:00:00",
-    "message": "Hey!",
+    "content": "Hey!",
     "profilePic": "https://example.com/profile-pic-13.jpg",
     "messageCount": 2
   },
   {
     "name": "James",
     "timestamp": "2022-01-01 23:00:00",
-    "message": "What's going on?",
+    "content": "What's going on?",
     "profilePic": "https://example.com/profile-pic-14.jpg",
     "messageCount": 1
   },
   {
     "name": "Mia",
     "timestamp": "2022-01-02 00:00:00",
-    "message": "Long time no talk!",
+    "content": "Long time no talk!",
     "profilePic": "https://example.com/profile-pic-15.jpg",
     "messageCount": 0
   },
   {
     "name": "Benjamin",
     "timestamp": "2022-01-02 01:00:00",
-    "message": "How's everything?",
+    "content": "How's everything?",
     "profilePic": "https://example.com/profile-pic-16.jpg",
     "messageCount": 4
   },
   {
     "name": "Charlotte",
     "timestamp": "2022-01-02 02:00:00",
-    "message": "Nice to see you!",
+    "content": "Nice to see you!",
     "profilePic": "https://example.com/profile-pic-17.jpg",
     "messageCount": 0
   },
   {
     "name": "Joseph",
     "timestamp": "2022-01-02 03:00:00",
-    "message": "Hi there!",
+    "content": "Hi there!",
     "profilePic": "https://example.com/profile-pic-18.jpg",
     "messageCount": 3
   },
   {
     "name": "Harper",
     "timestamp": "2022-01-02 04:00:00",
-    "message": "How's your day?",
+    "content": "How's your day?",
     "profilePic": "https://example.com/profile-pic-19.jpg",
     "messageCount": 0
   },
   {
     "name": "Henry",
     "timestamp": "2022-01-02 05:00:00",
-    "message": "I'm doing well, thanks!",
+    "content": "I'm doing well, thanks!",
     "profilePic": "https://example.com/profile-pic-20.jpg",
     "messageCount": 0
   }
