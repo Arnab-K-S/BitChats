@@ -23,32 +23,24 @@ export const siteConfig = {
   ],
   navMenuItems: [
     {
-      label: "Profile",
-      href: "/profile",
+      label: "Home",
+      href: "/",
     },
     {
-      label: "Dashboard",
-      href: "/dashboard",
+      label: "Docs",
+      href: "/docs",
     },
     {
-      label: "Projects",
-      href: "/projects",
+      label: "Chats",
+      href: "/chats",
     },
     {
-      label: "Team",
-      href: "/team",
+      label: "User",
+      href: "/users",
     },
     {
-      label: "Calendar",
-      href: "/calendar",
-    },
-    {
-      label: "Settings",
-      href: "/settings",
-    },
-    {
-      label: "Help & Feedback",
-      href: "/help-feedback",
+      label: "Blog",
+      href: "/blog",
     },
     {
       label: "Logout",
@@ -56,7 +48,7 @@ export const siteConfig = {
     },
   ],
   links: {
-    github: "https://github.com/nextui-org/nextui",
+    github: "https://github.com/Arnab-K-S",
     twitter: "https://twitter.com/getnextui",
     chats: "/chats",
     docs: "https://nextui-docs-v2.vercel.app",
