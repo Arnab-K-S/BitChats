@@ -19,7 +19,6 @@ function App() {
 
   const handleLogin = () => {
     setLogin(true);
-    localStorage.setItem("userInfo", JSON.stringify(true));
   };
 
   const handleLogout = () => {

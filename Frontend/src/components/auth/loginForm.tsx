@@ -89,7 +89,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
         );
         console.log(data);
         toast.success("Registration Successful");
-        localStorage.setItem("userInfo", JSON.stringify(data));
+        localStorage.setItem("userInfo",JSON.stringify(data));
         setLoggedIn(true);
       } catch (error: any) {
         console.error("Error:", error.response || error.message);
@@ -139,10 +139,6 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
     });
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("userInfo");
-    setLoggedIn(false);
-  };
 
   return (
     <div>
