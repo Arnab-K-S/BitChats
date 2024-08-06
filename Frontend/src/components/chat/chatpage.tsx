@@ -1,14 +1,34 @@
 import React, { useState, useEffect } from "react";
-import { Card, CardBody, Badge, Button, Divider, Avatar, Textarea, Skeleton } from "@nextui-org/react";
+import { Card, CardBody, Badge, Button, Divider, Avatar, Textarea, Skeleton, Select, SelectItem } from "@nextui-org/react";
 import Contacts from "./Contact";
 import MessageBox from "./Message";
+import SearchContacts from "./SearchContacts";
+import { Light as SyntaxHighlighter } from "react-syntax-highlighter";
+import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
+
 interface Message {
+  id: number;
+  text: string;
+  userId: string | undefined;
+  isCode?: boolean;
+  language?: string;
+}
+
+interface User {
   _id: string;
   name: string;
-  timestamp: string;
-  content: string;
   pic: string;
-  messageCount: number;
+}
+
+interface Chat {
+  _id: string;
+  chatName: string;
+  isGroupChat: boolean;
+  users: User[];
+  latestMessage: string;
+  createdAt: string;
+  updatedAt: string;
+  name:string;
 }
 
 
@@ -17,8 +37,11 @@ const Chat: React.FC = () => {
   const [chatmode, setChatmode] = useState<boolean>(false);
   const [messageText, setMessageText] = useState<string>("");
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
-  const [selectedContact, setSelectedContact] = useState<Message | null>(null);
-  const [messages, setMessages] = useState<{ id: number; text: string; userId: string | undefined }[]>([]);
+  const [selectedContact, setSelectedContact] = useState<Chat | null>(null);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [language, setLanguage] = useState<string>("text");
+
+  const languages = ["Text", "C++", "C", "Javascript", "Java", "Python"];
 
   useEffect(() => {
     const userInfo = JSON.parse(localStorage.getItem("userInfo") || "null");
@@ -43,9 +66,10 @@ const Chat: React.FC = () => {
     if (messageText.trim() && currentUserId !== null) {
       setMessages([
         ...messages,
-        { id: messages.length + 1, text: messageText, userId: currentUserId },
+        { id: messages.length + 1, text: messageText, userId: currentUserId, isCode: language !== "text", language: language },
       ]);
       setMessageText("");
+      setLanguage("text");
     }
   };
 
@@ -60,6 +84,7 @@ const Chat: React.FC = () => {
     <div className="flex space-x-2 justify-start w-full h-full">
       <Card className="w-96">
         <CardBody>
+          <SearchContacts onSelectContact={setSelectedContact} />
           <Contacts onSelectContact={setSelectedContact} />
         </CardBody>
       </Card>
@@ -79,7 +104,7 @@ const Chat: React.FC = () => {
                     <Avatar
                       className="m-0 p-0"
                       radius="full"
-                      src={selectedContact.pic}
+                      src={'pic' in selectedContact ? selectedContact.pic : selectedContact.users[0].pic}
                     />
                   </Badge>
                 ) : (
@@ -92,25 +117,45 @@ const Chat: React.FC = () => {
                   >
                     <Avatar
                       radius="full"
-                      src={selectedContact.pic}
+                      src={'pic' in selectedContact ? selectedContact.pic : selectedContact.users[0].pic}
                     />
                   </Badge>
                 )}
-                <h6 className="text-2xl">{selectedContact.name}</h6>
+                <h6 className="text-2xl">{'chatName' in selectedContact ? selectedContact.chatName : selectedContact.name}</h6>
+                <div className="ml-auto">
+                  <Select
+                    label="Syntax"
+                    placeholder="Text"
+                    className="w-32 float-right"
+                    value={language}
+                    onChange={(e) => setLanguage(e.target.value)}
+                  >
+                    {languages.map((lang) => (
+                      <SelectItem key={lang} value={lang.toLowerCase()}>
+                        {lang}
+                      </SelectItem>
+                    ))}
+                  </Select>
+                </div>
               </div>
               <Divider className="my-4" />
               <div className="textcontainer h-80 p-2 flex flex-col overflow-y-auto">
                 {messages.map((message) => (
                   <div
                     key={message.id}
-                    className={`message m-1 ${message.userId === currentUserId ? "sent self-end" : "received"
-                      }`}
+                    className={`message m-1 ${message.userId === currentUserId ? "sent self-end" : "received"}`}
                   >
-                    <MessageBox
-                      color="primary"
-                      variant={message.userId === currentUserId ? "shadow" : "bordered"}
-                      text={message.text}
-                    />
+                    {message.isCode ? (
+                      <SyntaxHighlighter language={message.language} style={docco}>
+                        {message.text}
+                      </SyntaxHighlighter>
+                    ) : (
+                      <MessageBox
+                        color="primary"
+                        variant={message.userId === currentUserId ? "shadow" : "bordered"}
+                        text={message.text}
+                      />
+                    )}
                   </div>
                 ))}
               </div>
@@ -134,7 +179,7 @@ const Chat: React.FC = () => {
               <h3>Select a contact to start chatting</h3>
             </div>
           )}
-          <div className="flex gap-2 mt-4">
+          <div className="flex gap-2">
             <Textarea
               isRequired
               placeholder="Type your message here..."
