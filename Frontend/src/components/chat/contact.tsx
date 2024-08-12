@@ -23,7 +23,7 @@ interface ContactsProps {
 }
 
 const Contacts: React.FC<ContactsProps> = ({ onSelectContact }) => {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);  
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true);
 
@@ -43,7 +43,6 @@ const Contacts: React.FC<ContactsProps> = ({ onSelectContact }) => {
           search
         }
       });
-
       const searchResults = response.data;
       setMessages(searchResults);
     } catch (error) {
@@ -108,9 +107,9 @@ const Contacts: React.FC<ContactsProps> = ({ onSelectContact }) => {
               {messages.map((message: Message, index: number) => (
                 <ListboxItem key={index} onClick={() => handleAction(index)}>
                   <div className="grid grid-cols-10 gap-2">
-                    <Avatar src={message.users[0]?.pic} className="col-span-2" />
+                    <Avatar src={message.users[1]?.pic} className="col-span-2" />
                     <div className="col-span-7">
-                      <strong>{message.users[0].name}</strong>
+                      <strong>{message.users[1].name}</strong>
                       <div className="flex justify-between">
                         <p className="text-blue-800">
                           {new Date(message.updatedAt).toLocaleDateString([], {
@@ -127,7 +126,7 @@ const Contacts: React.FC<ContactsProps> = ({ onSelectContact }) => {
                         </p>
                       </div>
                       <div className="flex gap-2">
-                        <p className="p-1 w-5 flex-1">{message.users[0]?.name}</p>
+                        <p className="p-1 w-5 flex-1">{message.users[1]?.name}</p>
                       </div>
                     </div>
                   </div>

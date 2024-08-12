@@ -60,6 +60,9 @@ const Chat: React.FC = () => {
     } else {
       setChatmode(false);
     }
+
+    console.log("Selected  Contacts:\n",selectedContact);
+    
   }, [selectedContact]);
 
   const handleSendMessage = () => {
@@ -84,8 +87,8 @@ const Chat: React.FC = () => {
     <div className="flex space-x-2 justify-start w-full h-full">
       <Card className="w-96">
         <CardBody>
-          <SearchContacts onSelectContact={setSelectedContact} />
-          <Contacts onSelectContact={setSelectedContact} />
+          <SearchContacts onSelectContact={(contact) => setSelectedContact(contact)} />
+          <Contacts onSelectContact={(contact) => setSelectedContact(contact)} />
         </CardBody>
       </Card>
       <Card className="w-full">
@@ -121,7 +124,7 @@ const Chat: React.FC = () => {
                     />
                   </Badge>
                 )}
-                <h6 className="text-2xl">{'chatName' in selectedContact ? selectedContact.chatName : selectedContact.name}</h6>
+                <h6 className="text-2xl">{selectedContact.users[1].name}</h6>
                 <div className="ml-auto">
                   <Select
                     label="Syntax"
