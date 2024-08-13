@@ -1,5 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Card, CardBody, Badge, Button, Divider, Avatar, Textarea, Skeleton, Select, SelectItem } from "@nextui-org/react";
+import {
+  Card,
+  CardBody,
+  Badge,
+  Button,
+  Divider,
+  Avatar,
+  Textarea,
+  Skeleton,
+  Select,
+  SelectItem,
+} from "@nextui-org/react";
 import Contacts from "./Contact";
 import MessageBox from "./Message";
 import SearchContacts from "./SearchContacts";
@@ -14,30 +25,38 @@ interface Message {
   language?: string;
 }
 
-interface User {
+export type Contact = {
   _id: string;
+  email: string;
   name: string;
   pic: string;
-}
+  messageCount?: number;
+  updatedAt: string;
+};
 
-interface Chat {
+export type User = {
+  _id: string;
+  name: string;
+  email: string;
+  pic: string;
+  isAdmin: boolean;
+};
+
+export type Chat = {
   _id: string;
   chatName: string;
+  email: string;
+  updatedAt: string;
   isGroupChat: boolean;
   users: User[];
-  latestMessage: string;
-  createdAt: string;
-  updatedAt: string;
-  name:string;
-}
-
+};
 
 const Chat: React.FC = () => {
   const [online, setOnline] = useState<boolean>(true);
   const [chatmode, setChatmode] = useState<boolean>(false);
   const [messageText, setMessageText] = useState<string>("");
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
-  const [selectedContact, setSelectedContact] = useState<Chat | null>(null);
+  const [selectedContact, setSelectedContact] = useState<Contact | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [language, setLanguage] = useState<string>("text");
 
@@ -55,21 +74,30 @@ const Chat: React.FC = () => {
       setChatmode(true);
       setMessages([
         { id: 1, text: "Hi there! How are you?", userId: selectedContact._id },
-        { id: 2, text: "Hello! I'm good, thank you. How about you?", userId: selectedContact._id },
+        {
+          id: 2,
+          text: "Hello! I'm good, thank you. How about you?",
+          userId: selectedContact._id,
+        },
       ]);
     } else {
       setChatmode(false);
     }
 
-    console.log("Selected  Contacts:\n",selectedContact);
-    
+    console.log("Selected  Contacts:\n", selectedContact);
   }, [selectedContact]);
 
   const handleSendMessage = () => {
     if (messageText.trim() && currentUserId !== null) {
       setMessages([
         ...messages,
-        { id: messages.length + 1, text: messageText, userId: currentUserId, isCode: language !== "text", language: language },
+        {
+          id: messages.length + 1,
+          text: messageText,
+          userId: currentUserId,
+          isCode: language !== "text",
+          language: language,
+        },
       ]);
       setMessageText("");
       setLanguage("text");
@@ -87,8 +115,8 @@ const Chat: React.FC = () => {
     <div className="flex space-x-2 justify-start w-full h-full">
       <Card className="w-96">
         <CardBody>
-          <SearchContacts onSelectContact={(contact) => setSelectedContact(contact)} />
-          <Contacts onSelectContact={(contact) => setSelectedContact(contact)} />
+          <SearchContacts onSelectContact={setSelectedContact} />
+          <Contacts onSelectContact={setSelectedContact} />
         </CardBody>
       </Card>
       <Card className="w-full">
@@ -107,7 +135,7 @@ const Chat: React.FC = () => {
                     <Avatar
                       className="m-0 p-0"
                       radius="full"
-                      src={'pic' in selectedContact ? selectedContact.pic : selectedContact.users[0].pic}
+                      src={selectedContact.pic}
                     />
                   </Badge>
                 ) : (
@@ -118,13 +146,10 @@ const Chat: React.FC = () => {
                     placement="bottom-right"
                     className="text-white"
                   >
-                    <Avatar
-                      radius="full"
-                      src={'pic' in selectedContact ? selectedContact.pic : selectedContact.users[0].pic}
-                    />
+                    <Avatar radius="full" src={selectedContact.pic} />
                   </Badge>
                 )}
-                <h6 className="text-2xl">{selectedContact.users[1].name}</h6>
+                <h6 className="text-2xl">{selectedContact.name}</h6>
                 <div className="ml-auto">
                   <Select
                     label="Syntax"
@@ -146,16 +171,27 @@ const Chat: React.FC = () => {
                 {messages.map((message) => (
                   <div
                     key={message.id}
-                    className={`message m-1 ${message.userId === currentUserId ? "sent self-end" : "received"}`}
+                    className={`message m-1 ${
+                      message.userId === currentUserId
+                        ? "sent self-end"
+                        : "received"
+                    }`}
                   >
                     {message.isCode ? (
-                      <SyntaxHighlighter language={message.language} style={docco}>
+                      <SyntaxHighlighter
+                        language={message.language}
+                        style={docco}
+                      >
                         {message.text}
                       </SyntaxHighlighter>
                     ) : (
                       <MessageBox
                         color="primary"
-                        variant={message.userId === currentUserId ? "shadow" : "bordered"}
+                        variant={
+                          message.userId === currentUserId
+                            ? "shadow"
+                            : "bordered"
+                        }
                         text={message.text}
                       />
                     )}
@@ -191,7 +227,9 @@ const Chat: React.FC = () => {
               onChange={(e) => setMessageText(e.target.value)}
               onKeyDown={handleKeyDown as any}
             />
-            <Button onClick={handleSendMessage} variant="ghost" color="primary">Send</Button>
+            <Button onClick={handleSendMessage} variant="ghost" color="primary">
+              Send
+            </Button>
           </div>
         </CardBody>
       </Card>
