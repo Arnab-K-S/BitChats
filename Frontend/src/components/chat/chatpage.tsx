@@ -10,6 +10,7 @@ import {
   Skeleton,
   Select,
   SelectItem,
+  Snippet,
 } from "@nextui-org/react";
 import Contacts from "./Contact";
 import MessageBox from "./Message";
@@ -178,19 +179,21 @@ const Chat: React.FC = () => {
                     }`}
                   >
                     {message.isCode ? (
-                      <SyntaxHighlighter
-                        language={message.language}
-                        style={docco}
-                      >
-                        {message.text}
-                      </SyntaxHighlighter>
+                      <Snippet variant="bordered" symbol="">
+                        <SyntaxHighlighter
+                          language={message.language}
+                          style={docco}
+                        >
+                          {message.text}
+                        </SyntaxHighlighter>
+                      </Snippet>
                     ) : (
                       <MessageBox
-                        color="primary"
-                        variant={
+                        // color="blue-500"
+                        color={
                           message.userId === currentUserId
-                            ? "shadow"
-                            : "bordered"
+                            ? "bg-slate-200 text-black"
+                            : "bg-blue-500 text-white"
                         }
                         text={message.text}
                       />
