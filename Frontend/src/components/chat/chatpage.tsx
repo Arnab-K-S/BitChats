@@ -189,7 +189,7 @@ const Chat: React.FC = () => {
                       </Snippet>
                     ) : (
                       <MessageBox
-                        // color="blue-500"
+                        variant="shadow"
                         color={
                           message.userId === currentUserId
                             ? "bg-slate-200 text-black"
