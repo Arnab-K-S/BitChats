@@ -85,7 +85,7 @@ const SearchContacts: React.FC<SearchContactsProps> = ({ onSelectContact }) => {
 
   useEffect(() => {
     handleSearch("");
-  }, []);
+  });
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 

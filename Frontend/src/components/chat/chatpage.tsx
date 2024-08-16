@@ -77,13 +77,11 @@ const Chat: React.FC = () => {
     } else {
       setChatmode(false);
     }
-  }, [selectedChat, messages, selectedContact]);
+  }, [selectedChat, messageText, selectedContact]);
 
   const fetchMessages = async (chatId: string) => {
     if (currentUser) {
-      console.log(chatId);
       try {
-        console.log(chatId);
         const response = await axios.get(`${HOST}/api/message/${chatId}`, {
           headers: {
             Authorization: `Bearer ${currentUser?.token}`,
@@ -123,12 +121,18 @@ const Chat: React.FC = () => {
       } catch (error) {
         console.error("Error sending message:", error);
       }
+      selectedChat.latestMessage = {
+        content: messageText,
+        language: language,
+      };
       setMessageText("");
       setLanguage("Text");
     }
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleKeyDown = (
+    e: React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => {
     if (e.key === "Enter" && !e.shiftKey && selectedChat) {
       e.preventDefault();
       handleSendMessage();
@@ -253,7 +257,7 @@ const Chat: React.FC = () => {
               className="max-w h-10 flex-grow"
               value={messageText}
               onChange={(e) => setMessageText(e.target.value)}
-              onKeyDown={() => handleKeyDown}
+              onKeyDown={handleKeyDown}
             />
             <Button onClick={handleSendMessage} variant="ghost" color="primary">
               Send

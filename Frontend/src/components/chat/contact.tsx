@@ -19,7 +19,6 @@ const Contacts: React.FC<ChatProps> = ({ onSelectContact }) => {
   const [chats, setChat] = useState<Chat[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [isLoading, setIsLoading] = useState(true);
-  console.log();
 
   const handleSearch = async (search: string) => {
     setIsLoading(true);
@@ -58,7 +57,7 @@ const Contacts: React.FC<ChatProps> = ({ onSelectContact }) => {
 
   useEffect(() => {
     handleSearch("");
-  }, []);
+  });
 
   return (
     <>
