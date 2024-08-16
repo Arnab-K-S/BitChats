@@ -71,8 +71,7 @@ const Chat: React.FC = () => {
   useEffect(() => {
     if (selectedChat) {
       setChatmode(true);
-      // console.log(selectedChat);
-
+      setOnline(true); // temp using to avoid eslint error
       fetchMessages(selectedChat._id);
     } else {
       setChatmode(false);
@@ -106,7 +105,7 @@ const Chat: React.FC = () => {
       currentUser.token &&
       selectedChat
     ) {
-      var chatId = selectedChat?._id;
+      const chatId = selectedChat?._id;
       try {
         const response = await axios.post(
           `http://localhost:3000/api/message/`,
@@ -256,7 +255,7 @@ const Chat: React.FC = () => {
               className="max-w h-10 flex-grow"
               value={messageText}
               onChange={(e) => setMessageText(e.target.value)}
-              onKeyDown={handleKeyDown as any}
+              onKeyDown={() => handleKeyDown}
             />
             <Button onClick={handleSendMessage} variant="ghost" color="primary">
               Send

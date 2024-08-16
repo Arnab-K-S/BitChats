@@ -15,7 +15,7 @@ interface MessageBoxProps {
     | "solid"
     | "light"
     | undefined;
-  color: any | undefined;
+  color: "bg-slate-200 text-black" | "bg-blue-500 text-white" | undefined;
   text: string;
 }
 
@@ -32,11 +32,7 @@ const MessageBox: React.FC<MessageBoxProps> = ({ variant, color, text }) => {
             <p>{text}</p>
           </div>
         </DropdownTrigger>
-        <DropdownMenu
-          aria-label="Dropdown Variants"
-          color={color}
-          variant={variant}
-        >
+        <DropdownMenu aria-label="Dropdown Variants" variant={variant}>
           <DropdownItem key="New">Reply</DropdownItem>
           <DropdownItem key="Copy">Copy</DropdownItem>
           <DropdownItem key="Edit">Edit</DropdownItem>
