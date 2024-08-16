@@ -50,6 +50,7 @@ export type Chat = {
 };
 
 const Chat: React.FC = () => {
+  const HOST = import.meta.env.VITE_HOST;
   const [online, setOnline] = useState<boolean>(true);
   const [chatmode, setChatmode] = useState<boolean>(false);
   const [messageText, setMessageText] = useState<string>("");
@@ -83,14 +84,11 @@ const Chat: React.FC = () => {
       console.log(chatId);
       try {
         console.log(chatId);
-        const response = await axios.get(
-          `http://localhost:3000/api/message/${chatId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${currentUser?.token}`,
-            },
-          }
-        );
+        const response = await axios.get(`${HOST}/api/message/${chatId}`, {
+          headers: {
+            Authorization: `Bearer ${currentUser?.token}`,
+          },
+        });
         setMessages(response.data);
       } catch (error) {
         console.error("Error fetching messages:", error);
@@ -108,7 +106,7 @@ const Chat: React.FC = () => {
       const chatId = selectedChat?._id;
       try {
         const response = await axios.post(
-          `http://localhost:3000/api/message/`,
+          `${HOST}/api/message/`,
           {
             content: messageText,
             chatId: chatId,

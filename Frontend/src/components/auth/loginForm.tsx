@@ -20,6 +20,7 @@ interface LoginFormProps {
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
+  const HOST = import.meta.env.VITE_HOST;
   const [newUser, setNewUser] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [pageloading, setPageLoading] = useState<boolean>(true);
@@ -77,7 +78,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
           },
         };
         const { data } = await axios.post(
-          "http://localhost:3000/api/user",
+          `${HOST}/api/user`,
           registrationData,
           config
         );
@@ -104,7 +105,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
           },
         };
         const { data } = await axios.post(
-          "http://localhost:3000/api/user/login",
+          `${HOST}/api/user/login`,
           loginData,
           config
         );

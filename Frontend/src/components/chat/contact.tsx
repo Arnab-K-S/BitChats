@@ -15,9 +15,11 @@ interface ChatProps {
 }
 
 const Contacts: React.FC<ChatProps> = ({ onSelectContact }) => {
+  const HOST = import.meta.env.VITE_HOST;
   const [chats, setChat] = useState<Chat[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [isLoading, setIsLoading] = useState(true);
+  console.log();
 
   const handleSearch = async (search: string) => {
     setIsLoading(true);
@@ -27,7 +29,7 @@ const Contacts: React.FC<ChatProps> = ({ onSelectContact }) => {
         throw new Error("User token not found in local storage");
       }
       const userInfo = JSON.parse(userToken);
-      const response = await axios.get(`http://localhost:3000/api/chat/`, {
+      const response = await axios.get(`${HOST}/api/chat/`, {
         headers: {
           Authorization: `Bearer ${userInfo.token}`,
         },

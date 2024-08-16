@@ -26,6 +26,7 @@ const SearchContacts: React.FC<SearchContactsProps> = ({ onSelectContact }) => {
   const [contacts, setContacts] = useState<User[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [isLoading, setIsLoading] = useState(true);
+  const HOST = import.meta.env.VITE_HOST;
 
   const handleSearch = async (search: string) => {
     setIsLoading(true);
@@ -35,14 +36,11 @@ const SearchContacts: React.FC<SearchContactsProps> = ({ onSelectContact }) => {
         throw new Error("User token not found in local storage");
       }
       const userInfo = JSON.parse(userToken);
-      const response = await axios.get(
-        `http://localhost:3000/api/user?search=${search}`,
-        {
-          headers: {
-            Authorization: `Bearer ${userInfo.token}`,
-          },
-        }
-      );
+      const response = await axios.get(`${HOST}/api/user?search=${search}`, {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      });
 
       const searchResults = response.data as User[];
       setContacts(searchResults);
@@ -62,7 +60,7 @@ const SearchContacts: React.FC<SearchContactsProps> = ({ onSelectContact }) => {
       }
       const userInfo = JSON.parse(userToken);
       await axios.post(
-        `http://localhost:3000/api/chat/`,
+        `${HOST}/api/chat/`,
         { userId: selectedContact._id },
         {
           headers: {
