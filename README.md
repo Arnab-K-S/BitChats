@@ -19,4 +19,4 @@ A chat application built with Next UI, allowing users to resolve doubts and debu
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/chat-application.git](https://github.com/Arnab-K-S/BitChats.git
+   git clone https://github.com/Arnab-K-S/BitChats.git
