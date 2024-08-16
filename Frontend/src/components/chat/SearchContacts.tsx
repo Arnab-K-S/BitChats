@@ -16,14 +16,14 @@ import {
 } from "@nextui-org/react";
 
 import axios from "axios";
-import { Contact } from "./chatpage";
+import { User } from "./chatpage";
 
 interface SearchContactsProps {
-  onSelectContact: Dispatch<SetStateAction<Contact | null>>;
+  onSelectContact: Dispatch<SetStateAction<User | null>>;
 }
 
 const SearchContacts: React.FC<SearchContactsProps> = ({ onSelectContact }) => {
-  const [contacts, setContacts] = useState<Contact[]>([]);
+  const [contacts, setContacts] = useState<User[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [isLoading, setIsLoading] = useState(true);
 
@@ -44,10 +44,8 @@ const SearchContacts: React.FC<SearchContactsProps> = ({ onSelectContact }) => {
         }
       );
 
-      const searchResults = response.data as Contact[];
-      setContacts(
-        searchResults.map((contact) => ({ ...contact, messageCount: 7 }))
-      );
+      const searchResults = response.data as User[];
+      setContacts(searchResults);
     } catch (error) {
       console.error("Error fetching search results:", error);
     }
@@ -77,7 +75,6 @@ const SearchContacts: React.FC<SearchContactsProps> = ({ onSelectContact }) => {
     }
 
     const updatedContacts = [...contacts];
-    updatedContacts[index].messageCount = 0;
     setContacts(updatedContacts);
     onClose();
   };
@@ -151,7 +148,7 @@ const SearchContacts: React.FC<SearchContactsProps> = ({ onSelectContact }) => {
               </>
             ) : (
               <Listbox aria-label="Messages" className="h-10">
-                {contacts.map((contact: Contact, index: number) => (
+                {contacts.map((contact: User, index: number) => (
                   <ListboxItem key={index} onClick={() => handleAction(index)}>
                     <div className="grid grid-cols-10 gap-2">
                       <Avatar src={contact.pic} className="col-span-2" />

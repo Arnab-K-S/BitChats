@@ -8,13 +8,13 @@ import {
   Avatar,
 } from "@nextui-org/react";
 import axios from "axios";
-import { Chat, Contact } from "./chatpage";
+import { Chat } from "./chatpage";
 
-interface ContactsProps {
-  onSelectContact: Dispatch<SetStateAction<Contact | null>>;
+interface ChatProps {
+  onSelectContact: Dispatch<SetStateAction<Chat | null>>;
 }
 
-const Contacts: React.FC<ContactsProps> = ({ onSelectContact }) => {
+const Contacts: React.FC<ChatProps> = ({ onSelectContact }) => {
   const [chats, setChat] = useState<Chat[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [isLoading, setIsLoading] = useState(true);
@@ -45,11 +45,7 @@ const Contacts: React.FC<ContactsProps> = ({ onSelectContact }) => {
 
   const handleAction = (index: number) => {
     const selectedChat = chats[index];
-    onSelectContact({
-      ...selectedChat.users[1],
-      updatedAt: selectedChat.updatedAt,
-      messageCount: 7,
-    });
+    onSelectContact(selectedChat);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -123,7 +119,9 @@ const Contacts: React.FC<ContactsProps> = ({ onSelectContact }) => {
                       </p>
                     </div>
                     <div className="flex gap-2">
-                      <p className="p-1 w-5 flex-1">{chat.users[1].name}</p>
+                      <p className="p-1 w-5 flex-1">
+                        {chat?.latestMessage?.content}
+                      </p>
                     </div>
                   </div>
                 </div>

@@ -17,23 +17,7 @@ import MessageBox from "./Message";
 import SearchContacts from "./SearchContacts";
 import { Light as SyntaxHighlighter } from "react-syntax-highlighter";
 import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
-
-interface Message {
-  id: number;
-  text: string;
-  userId: string | undefined;
-  isCode?: boolean;
-  language?: string;
-}
-
-export type Contact = {
-  _id: string;
-  email: string;
-  name: string;
-  pic: string;
-  messageCount?: number;
-  updatedAt: string;
-};
+import axios from "axios";
 
 export type User = {
   _id: string;
@@ -41,7 +25,19 @@ export type User = {
   email: string;
   pic: string;
   isAdmin: boolean;
+  token: string;
 };
+
+interface Message {
+  _id?: string;
+  sender?: User;
+  content: string;
+  chat?: string;
+  language?: string;
+  readBy?: User[];
+  createdAt?: string;
+  updatedAt?: string;
+}
 
 export type Chat = {
   _id: string;
@@ -49,6 +45,7 @@ export type Chat = {
   email: string;
   updatedAt: string;
   isGroupChat: boolean;
+  latestMessage: Message;
   users: User[];
 };
 
@@ -56,57 +53,86 @@ const Chat: React.FC = () => {
   const [online, setOnline] = useState<boolean>(true);
   const [chatmode, setChatmode] = useState<boolean>(false);
   const [messageText, setMessageText] = useState<string>("");
-  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
-  const [selectedContact, setSelectedContact] = useState<Contact | null>(null);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
+  const [selectedContact, setSelectedContact] = useState<User | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
-  const [language, setLanguage] = useState<string>("text");
+  const [language, setLanguage] = useState<string>("Text");
 
   const languages = ["Text", "C++", "C", "Javascript", "Java", "Python"];
 
   useEffect(() => {
     const userInfo = JSON.parse(localStorage.getItem("userInfo") || "null");
-    if (userInfo && userInfo._id) {
-      setCurrentUserId(userInfo._id);
+    if (userInfo && userInfo) {
+      setCurrentUser(userInfo);
     }
   }, []);
 
   useEffect(() => {
-    if (selectedContact) {
+    if (selectedChat) {
       setChatmode(true);
-      setMessages([
-        { id: 1, text: "Hi there! How are you?", userId: selectedContact._id },
-        {
-          id: 2,
-          text: "Hello! I'm good, thank you. How about you?",
-          userId: selectedContact._id,
-        },
-      ]);
+      // console.log(selectedChat);
+
+      fetchMessages(selectedChat._id);
     } else {
       setChatmode(false);
     }
+  }, [selectedChat, messages, selectedContact]);
 
-    console.log("Selected  Contacts:\n", selectedContact);
-  }, [selectedContact]);
+  const fetchMessages = async (chatId: string) => {
+    if (currentUser) {
+      console.log(chatId);
+      try {
+        console.log(chatId);
+        const response = await axios.get(
+          `http://localhost:3000/api/message/${chatId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${currentUser?.token}`,
+            },
+          }
+        );
+        setMessages(response.data);
+      } catch (error) {
+        console.error("Error fetching messages:", error);
+      }
+    }
+  };
 
-  const handleSendMessage = () => {
-    if (messageText.trim() && currentUserId !== null) {
-      setMessages([
-        ...messages,
-        {
-          id: messages.length + 1,
-          text: messageText,
-          userId: currentUserId,
-          isCode: language !== "text",
-          language: language,
-        },
-      ]);
+  const handleSendMessage = async () => {
+    if (
+      messageText.trim() &&
+      currentUser &&
+      currentUser.token &&
+      selectedChat
+    ) {
+      var chatId = selectedChat?._id;
+      try {
+        const response = await axios.post(
+          `http://localhost:3000/api/message/`,
+          {
+            content: messageText,
+            chatId: chatId,
+            language: language,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${currentUser.token}`,
+            },
+          }
+        );
+        setMessages([...messages, ...response.data]);
+        console.log(response.data);
+      } catch (error) {
+        console.error("Error sending message:", error);
+      }
       setMessageText("");
-      setLanguage("text");
+      setLanguage("Text");
     }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter" && !e.shiftKey) {
+    if (e.key === "Enter" && !e.shiftKey && selectedChat) {
       e.preventDefault();
       handleSendMessage();
     }
@@ -117,12 +143,12 @@ const Chat: React.FC = () => {
       <Card className="w-96">
         <CardBody>
           <SearchContacts onSelectContact={setSelectedContact} />
-          <Contacts onSelectContact={setSelectedContact} />
+          <Contacts onSelectContact={setSelectedChat} />
         </CardBody>
       </Card>
       <Card className="w-full">
         <CardBody className="overflow-hidden">
-          {chatmode && selectedContact ? (
+          {chatmode && selectedChat && messages && currentUser ? (
             <>
               <div className="namebar flex gap-4">
                 {online ? (
@@ -136,7 +162,7 @@ const Chat: React.FC = () => {
                     <Avatar
                       className="m-0 p-0"
                       radius="full"
-                      src={selectedContact.pic}
+                      src={selectedChat.users[1].pic}
                     />
                   </Badge>
                 ) : (
@@ -147,14 +173,14 @@ const Chat: React.FC = () => {
                     placement="bottom-right"
                     className="text-white"
                   >
-                    <Avatar radius="full" src={selectedContact.pic} />
+                    <Avatar radius="full" src={selectedChat.users[1].pic} />
                   </Badge>
                 )}
-                <h6 className="text-2xl">{selectedContact.name}</h6>
+                <h6 className="text-2xl">{selectedChat.users[1].name}</h6>
                 <div className="ml-auto">
                   <Select
                     label="Syntax"
-                    placeholder="Text"
+                    placeholder="text"
                     className="w-32 float-right"
                     value={language}
                     onChange={(e) => setLanguage(e.target.value)}
@@ -171,31 +197,33 @@ const Chat: React.FC = () => {
               <div className="textcontainer h-80 p-2 flex flex-col overflow-y-auto">
                 {messages.map((message) => (
                   <div
-                    key={message.id}
+                    key={message._id}
                     className={`message m-1 ${
-                      message.userId === currentUserId
+                      message?.sender?._id === currentUser._id
                         ? "sent self-end"
                         : "received"
                     }`}
                   >
-                    {message.isCode ? (
+                    {message.language &&
+                    message.language != "text" &&
+                    message.language != "Text" ? (
                       <Snippet variant="bordered" symbol="">
                         <SyntaxHighlighter
                           language={message.language}
                           style={docco}
                         >
-                          {message.text}
+                          {message.content}
                         </SyntaxHighlighter>
                       </Snippet>
                     ) : (
                       <MessageBox
                         variant="shadow"
                         color={
-                          message.userId === currentUserId
+                          message?.sender?._id === currentUser?._id
                             ? "bg-slate-200 text-black"
                             : "bg-blue-500 text-white"
                         }
-                        text={message.text}
+                        text={message.content}
                       />
                     )}
                   </div>
