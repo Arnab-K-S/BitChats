@@ -8,40 +8,40 @@ export const siteConfig = {
       label: "Home",
       href: "/",
     },
-    {
-      label: "Docs",
-      href: "/docs",
-    },
+    // {
+    //   label: "Docs",
+    //   href: "/docs",
+    // },
     {
       label: "Chats",
       href: "/chats",
     },
-    {
-      label: "Blog",
-      href: "/blog",
-    },
+    // {
+    //   label: "Blog",
+    //   href: "/blog",
+    // },
   ],
   navMenuItems: [
     {
       label: "Home",
       href: "/",
     },
-    {
-      label: "Docs",
-      href: "/docs",
-    },
+    // {
+    //   label: "Docs",
+    //   href: "/docs",
+    // },
     {
       label: "Chats",
       href: "/chats",
     },
-    {
-      label: "User",
-      href: "/users",
-    },
-    {
-      label: "Blog",
-      href: "/blog",
-    },
+    // {
+    //   label: "User",
+    //   href: "/users",
+    // },
+    // {
+    //   label: "Blog",
+    //   href: "/blog",
+    // },
     {
       label: "Logout",
       href: "/logout",

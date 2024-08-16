@@ -1,6 +1,6 @@
-import { Kbd } from "@nextui-org/kbd";
+// import { Kbd } from "@nextui-org/kbd";
 import { Link } from "@nextui-org/link";
-import { Input } from "@nextui-org/input";
+// import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/react";
 import {
   Navbar as NextUINavbar,
@@ -20,7 +20,7 @@ import {
   TwitterIcon,
   GithubIcon,
   DiscordIcon,
-  SearchIcon,
+  // SearchIcon,
   Logo,
 } from "@/components/icons";
 
@@ -29,20 +29,20 @@ interface NavbarProps {
 }
 
 const Navbar: React.FC<NavbarProps> = ({ onLogout }) => {
-  const searchInput = (
-    <Input
-      aria-label="Search"
-      classNames={{
-        inputWrapper: "bg-default-100",
-        input: "text-sm",
-      }}
-      endContent={<Kbd className="hidden lg:inline-block">K</Kbd>}
-      labelPlacement="outside"
-      placeholder="Search..."
-      startContent={<SearchIcon className="text-base text-default-400" />}
-      type="search"
-    />
-  );
+  // const searchInput = (
+  //   <Input
+  //     aria-label="Search"
+  //     classNames={{
+  //       inputWrapper: "bg-default-100",
+  //       input: "text-sm",
+  //     }}
+  //     endContent={<Kbd className="hidden lg:inline-block">K</Kbd>}
+  //     labelPlacement="outside"
+  //     placeholder="Search..."
+  //     startContent={<SearchIcon className="text-base text-default-400" />}
+  //     type="search"
+  //   />
+  // );
 
   return (
     <NextUINavbar maxWidth="xl" position="sticky">
@@ -73,10 +73,12 @@ const Navbar: React.FC<NavbarProps> = ({ onLogout }) => {
             </NavbarItem>
           ))}
         </div>
-
       </NavbarContent>
 
-      <NavbarContent className="hidden sm:flex basis-1/5 sm:basis-full" justify="end">
+      <NavbarContent
+        className="hidden sm:flex basis-1/5 sm:basis-full"
+        justify="end"
+      >
         <NavbarItem className="hidden sm:flex gap-2">
           <Link isExternal href={siteConfig.links.twitter}>
             <TwitterIcon className="text-default-500" />
@@ -88,14 +90,9 @@ const Navbar: React.FC<NavbarProps> = ({ onLogout }) => {
             <GithubIcon className="text-default-500" />
           </Link>
           <ThemeSwitch />
-
         </NavbarItem>
-        <NavbarItem className="hidden lg:flex">{searchInput}</NavbarItem>
-        <Button
-          onClick={onLogout}
-          color="danger"
-          variant="solid"
-        >
+        {/* <NavbarItem className="hidden lg:flex">{searchInput}</NavbarItem> */}
+        <Button onClick={onLogout} color="danger" variant="solid">
           Logout
         </Button>
       </NavbarContent>
@@ -106,7 +103,6 @@ const Navbar: React.FC<NavbarProps> = ({ onLogout }) => {
         </Link>
         <ThemeSwitch />
         <NavbarMenuToggle />
-
       </NavbarContent>
 
       <NavbarMenu>
@@ -118,8 +114,8 @@ const Navbar: React.FC<NavbarProps> = ({ onLogout }) => {
                   index === 2
                     ? "primary"
                     : index === siteConfig.navMenuItems.length - 1
-                      ? "danger"
-                      : "foreground"
+                    ? "danger"
+                    : "foreground"
                 }
                 href="#"
                 size="lg"
@@ -129,7 +125,7 @@ const Navbar: React.FC<NavbarProps> = ({ onLogout }) => {
             </NavbarMenuItem>
           ))}
         </div>
-        {searchInput}
+        {/* {searchInput} */}
       </NavbarMenu>
     </NextUINavbar>
   );

@@ -12,18 +12,19 @@ import BlogPage from "@/pages/blog";
 function MainPage() {
   return (
     <>
-    <React.StrictMode>
-      <BrowserRouter>
-        <Provider>
-          <Routes>
-            <Route element={<IndexPage />} path="/" />
-            <Route element={<DocsPage />} path="/docs" />
-            <Route element={<PricingPage />} path="/pricing" />
-            <Route element={<BlogPage />} path="/blog" />
-          </Routes>
-        </Provider>
-      </BrowserRouter>
-    </React.StrictMode>,
+      <React.StrictMode>
+        <BrowserRouter>
+          <Provider>
+            <Routes>
+              <Route element={<IndexPage />} path="/" />
+              <Route element={<DocsPage />} path="/docs" />
+              <Route element={<PricingPage />} path="/pricing" />
+              <Route element={<BlogPage />} path="/blog" />
+            </Routes>
+          </Provider>
+        </BrowserRouter>
+      </React.StrictMode>
+      ,
     </>
   );
 }

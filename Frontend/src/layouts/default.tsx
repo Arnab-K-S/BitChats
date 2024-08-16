@@ -10,7 +10,7 @@ interface DefaultProps {
 const DefaultLayout: React.FC<DefaultProps> = ({ onLogout, children }) => {
   return (
     <div className="relative flex flex-col h-screen">
-      <Navbar onLogout={onLogout}/>
+      <Navbar onLogout={onLogout} />
       <main className="container mx-auto max-w-7xl px-6 flex-grow pt-16">
         {children}
       </main>
