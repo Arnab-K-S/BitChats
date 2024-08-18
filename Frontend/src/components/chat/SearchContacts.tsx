@@ -14,8 +14,8 @@ import {
   useDisclosure,
   ModalFooter,
 } from "@nextui-org/react";
-
 import axios from "axios";
+
 import { User } from "./chatpage";
 
 interface SearchContactsProps {
@@ -32,6 +32,7 @@ const SearchContacts: React.FC<SearchContactsProps> = ({ onSelectContact }) => {
     setIsLoading(true);
     try {
       const userToken = localStorage.getItem("userInfo");
+
       if (!userToken) {
         throw new Error("User token not found in local storage");
       }
@@ -43,6 +44,7 @@ const SearchContacts: React.FC<SearchContactsProps> = ({ onSelectContact }) => {
       });
 
       const searchResults = response.data as User[];
+
       setContacts(searchResults);
     } catch (error) {
       console.error("Error fetching search results:", error);
@@ -52,13 +54,16 @@ const SearchContacts: React.FC<SearchContactsProps> = ({ onSelectContact }) => {
 
   const handleAction = async (index: number) => {
     const selectedContact = contacts[index];
+
     onSelectContact(selectedContact);
     try {
       const userToken = localStorage.getItem("userInfo");
+
       if (!userToken) {
         throw new Error("User token not found in local storage");
       }
       const userInfo = JSON.parse(userToken);
+
       await axios.post(
         `${HOST}/api/chat/`,
         { userId: selectedContact._id },
@@ -66,19 +71,21 @@ const SearchContacts: React.FC<SearchContactsProps> = ({ onSelectContact }) => {
           headers: {
             Authorization: `Bearer ${userInfo.token}`,
           },
-        }
+        },
       );
     } catch (error) {
       console.error("Error sending contact ID:", error);
     }
 
     const updatedContacts = [...contacts];
+
     setContacts(updatedContacts);
     onClose();
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
+
     setSearchTerm(value);
     handleSearch(value);
   };
@@ -92,18 +99,18 @@ const SearchContacts: React.FC<SearchContactsProps> = ({ onSelectContact }) => {
   return (
     <>
       <Button
-        onClick={() => onOpen()}
-        variant="ghost"
-        color="primary"
         className="mt-2 mb-2"
+        color="primary"
+        variant="ghost"
+        onClick={() => onOpen()}
       >
         Add New Friends
       </Button>
       <Modal
         backdrop="blur"
+        className="h-full m-1 p-1"
         isOpen={isOpen}
         onClose={onClose}
-        className="h-full m-1 p-1"
       >
         <ModalContent>
           <ModalHeader className="flex flex-col gap-1">
@@ -127,7 +134,7 @@ const SearchContacts: React.FC<SearchContactsProps> = ({ onSelectContact }) => {
             {isLoading ? (
               <>
                 <div className="flex justify-center">
-                  <Spinner label="Loading SearchContacts..." color="warning" />
+                  <Spinner color="warning" label="Loading SearchContacts..." />
                 </div>
                 {Array.from({ length: 10 }, (_, index) => (
                   <div
@@ -149,7 +156,7 @@ const SearchContacts: React.FC<SearchContactsProps> = ({ onSelectContact }) => {
                 {contacts.map((contact: User, index: number) => (
                   <ListboxItem key={index} onClick={() => handleAction(index)}>
                     <div className="grid grid-cols-10 gap-2">
-                      <Avatar src={contact.pic} className="col-span-2" />
+                      <Avatar className="col-span-2" src={contact.pic} />
                       <div className="col-span-7">
                         <strong>{contact.name}</strong>
                         <p className="text-blue-800">{contact.email}</p>

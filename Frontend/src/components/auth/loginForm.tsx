@@ -2,11 +2,13 @@ import React, { useState, ChangeEvent } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+import { Spinner } from "@nextui-org/react";
+
+import AuthForm from "./authForm";
+
 import { ThemeSwitch } from "@/components/theme-switch";
 // import Home from "@/components/Home/home";
 // import DefaultLayout from "@/layouts/default";
-import AuthForm from "./authForm";
-import { Spinner } from "@nextui-org/react";
 
 interface FormData {
   name: string;
@@ -38,23 +40,29 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const validateForm = () => {
     const { name, email, password, confirmPassword } = formData;
+
     if (newUser && (!name || !email || !password || !confirmPassword)) {
       toast.error("All fields are required for registration!");
+
       return false;
     }
     if (!newUser && (!email || !password)) {
       toast.error("Email and Password are required for login!");
+
       return false;
     }
     if (newUser && password !== confirmPassword) {
       toast.error("Passwords do not match!");
+
       return false;
     }
+
     return true;
   };
 
@@ -69,6 +77,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
         email: formData.email,
         password: formData.password,
       };
+
       console.log("Registration Data: ", registrationData);
 
       try {
@@ -82,6 +91,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
           registrationData,
           config
         );
+
         console.log(data);
         toast.success("Registration Successful");
         localStorage.setItem("userInfo", JSON.stringify(data));
@@ -96,6 +106,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
         email: formData.email,
         password: formData.password,
       };
+
       console.log("Login Data: ", loginData);
 
       try {
@@ -109,6 +120,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
           loginData,
           config
         );
+
         console.log(data);
         toast.success("Login Successful");
         localStorage.setItem("userInfo", JSON.stringify(data));
@@ -146,11 +158,11 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
             <ThemeSwitch />
           </div>
           <AuthForm
-            newUser={newUser}
-            loading={loading}
             formData={formData}
             handleChange={handleChange}
             handleSubmit={handleSubmit}
+            loading={loading}
+            newUser={newUser}
             toggleNewUser={toggleNewUser}
           />
         </>

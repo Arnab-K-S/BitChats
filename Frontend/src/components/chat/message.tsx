@@ -46,7 +46,7 @@ const MessageBox: React.FC<MessageBoxProps> = ({ variant, color, text }) => {
 
   return (
     <div className="flex flex-wrap gap-2">
-      <DropdownContent variant={variant} color={color} text={text} />
+      <DropdownContent color={color} text={text} variant={variant} />
     </div>
   );
 };

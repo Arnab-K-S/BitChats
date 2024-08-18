@@ -24,14 +24,14 @@ const InputField: React.FC<InputFieldProps> = ({
 }) => (
   <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
     <Input
-      type={type}
-      name={name}
-      variant={variant}
       label={label}
+      name={name}
       placeholder={placeholder}
-      value={value}
-      onChange={onChange}
       required={required}
+      type={type}
+      value={value}
+      variant={variant}
+      onChange={onChange}
     />
   </div>
 );

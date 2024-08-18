@@ -1,8 +1,9 @@
 import React, { ChangeEvent } from "react";
 import { Card } from "@nextui-org/react";
 import { Button } from "@nextui-org/button";
-import InputField from "./inputField";
 import { Spinner } from "@nextui-org/react";
+
+import InputField from "./inputField";
 
 interface AuthFormProps {
   newUser: boolean;
@@ -26,79 +27,85 @@ const AuthForm: React.FC<AuthFormProps> = ({
   handleSubmit,
   toggleNewUser,
 }) => (
-  <Card className="h-full w-80 p-10 shadow-xl border dark:bg-slate-800" isBlurred>
+  <Card
+    isBlurred
+    className="h-full w-80 p-10 shadow-xl border dark:bg-slate-800"
+  >
     <div className="w-full flex flex-col gap-4">
       {newUser && (
         <InputField
-          type="text"
-          name="name"
-          variant="underlined"
           label="Name"
+          name="name"
           placeholder="Enter your Name"
-          value={formData.name}
           required={true}
+          type="text"
+          value={formData.name}
+          variant="underlined"
           onChange={handleChange}
         />
       )}
       <InputField
-        type="email"
-        name="email"
-        variant="underlined"
         label="Email"
+        name="email"
         placeholder="Enter your Email"
-        value={formData.email}
         required={true}
+        type="email"
+        value={formData.email}
+        variant="underlined"
         onChange={handleChange}
       />
       <InputField
-        type="password"
-        name="password"
-        variant="underlined"
         label="Password"
+        name="password"
         placeholder="Enter your Password"
-        value={formData.password}
         required={true}
+        type="password"
+        value={formData.password}
+        variant="underlined"
         onChange={handleChange}
       />
       {newUser && (
         <InputField
-          type="password"
-          name="confirmPassword"
-          variant="underlined"
           label="Confirm Password"
+          name="confirmPassword"
           placeholder="Confirm your Password"
-          value={formData.confirmPassword}
           required={true}
+          type="password"
+          value={formData.confirmPassword}
+          variant="underlined"
           onChange={handleChange}
         />
       )}
       <Button
-        color="primary"
-        variant="bordered"
         className="mt-5 mb-5"
-        onClick={handleSubmit}
+        color="primary"
         disabled={loading}
+        variant="bordered"
+        onClick={handleSubmit}
       >
-        {loading ? (newUser ?
-          (
+        {loading ? (
+          newUser ? (
             <>
               <Spinner />
               Registering...
             </>
-          )
-          : (
+          ) : (
             <>
               <Spinner />
               Logging in...
             </>
           )
-        ) : newUser ? "Register" : "Login"}
+        ) : newUser ? (
+          "Register"
+        ) : (
+          "Login"
+        )}
       </Button>
       <Button
         color="warning"
+        disabled={loading}
         variant="bordered"
         onClick={toggleNewUser}
-        disabled={loading}
       >
         {newUser ? "Already Registered?" : "Register"}
       </Button>

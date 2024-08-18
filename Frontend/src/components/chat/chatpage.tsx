@@ -12,12 +12,13 @@ import {
   SelectItem,
   Snippet,
 } from "@nextui-org/react";
-import Contacts from "./Contact";
-import MessageBox from "./Message";
-import SearchContacts from "./SearchContacts";
 import { Light as SyntaxHighlighter } from "react-syntax-highlighter";
 import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import axios from "axios";
+
+import Contacts from "./Contact";
+import MessageBox from "./Message";
+import SearchContacts from "./SearchContacts";
 
 export type User = {
   _id: string;
@@ -64,6 +65,7 @@ const Chat: React.FC = () => {
 
   useEffect(() => {
     const userInfo = JSON.parse(localStorage.getItem("userInfo") || "null");
+
     if (userInfo && userInfo) {
       setCurrentUser(userInfo);
     }
@@ -87,6 +89,7 @@ const Chat: React.FC = () => {
             Authorization: `Bearer ${currentUser?.token}`,
           },
         });
+
         setMessages(response.data);
       } catch (error) {
         console.error("Error fetching messages:", error);
@@ -102,6 +105,7 @@ const Chat: React.FC = () => {
       selectedChat
     ) {
       const chatId = selectedChat?._id;
+
       try {
         const response = await axios.post(
           `${HOST}/api/message/`,
@@ -116,6 +120,7 @@ const Chat: React.FC = () => {
             },
           }
         );
+
         setMessages([...messages, ...response.data]);
         console.log(response.data);
       } catch (error) {
@@ -154,11 +159,11 @@ const Chat: React.FC = () => {
               <div className="namebar flex gap-4">
                 {online ? (
                   <Badge
-                    content="online"
-                    color="success"
-                    shape="circle"
-                    placement="bottom-right"
                     className="text-white"
+                    color="success"
+                    content="online"
+                    placement="bottom-right"
+                    shape="circle"
                   >
                     <Avatar
                       className="m-0 p-0"
@@ -168,11 +173,11 @@ const Chat: React.FC = () => {
                   </Badge>
                 ) : (
                   <Badge
-                    content="offline"
-                    color="danger"
-                    shape="circle"
-                    placement="bottom-right"
                     className="text-white"
+                    color="danger"
+                    content="offline"
+                    placement="bottom-right"
+                    shape="circle"
                   >
                     <Avatar radius="full" src={selectedChat.users[1].pic} />
                   </Badge>
@@ -180,14 +185,14 @@ const Chat: React.FC = () => {
                 <h6 className="text-2xl">{selectedChat.users[1].name}</h6>
                 <div className="ml-auto">
                   <Select
+                    className="w-32 float-right"
                     label="Syntax"
                     placeholder="text"
-                    className="w-32 float-right"
                     value={language}
                     onChange={(e) => setLanguage(e.target.value)}
                   >
                     {languages.map((lang) => (
-                      <SelectItem key={lang} value={lang.toLowerCase()}>
+                      <SelectItem key={lang} value={lang}>
                         {lang}
                       </SelectItem>
                     ))}
@@ -208,7 +213,7 @@ const Chat: React.FC = () => {
                     {message.language &&
                     message.language != "text" &&
                     message.language != "Text" ? (
-                      <Snippet variant="bordered" symbol="">
+                      <Snippet symbol="" variant="bordered">
                         <SyntaxHighlighter
                           language={message.language}
                           style={docco}
@@ -218,13 +223,13 @@ const Chat: React.FC = () => {
                       </Snippet>
                     ) : (
                       <MessageBox
-                        variant="shadow"
                         color={
                           message?.sender?._id === currentUser?._id
                             ? "bg-slate-200 text-black"
                             : "bg-blue-500 text-white"
                         }
                         text={message.content}
+                        variant="shadow"
                       />
                     )}
                   </div>
@@ -234,17 +239,17 @@ const Chat: React.FC = () => {
           ) : (
             <div className="flex flex-col justify-center items-center h-full w-full space-y-3">
               <Skeleton className="rounded-lg w-24 h-24">
-                <div className="rounded-lg bg-default-300"></div>
+                <div className="rounded-lg bg-default-300" />
               </Skeleton>
               <div className="space-y-3 w-full">
                 <Skeleton className="w-3/5 rounded-lg">
-                  <div className="h-3 w-3/5 rounded-lg bg-default-200"></div>
+                  <div className="h-3 w-3/5 rounded-lg bg-default-200" />
                 </Skeleton>
                 <Skeleton className="w-4/5 rounded-lg">
-                  <div className="h-3 w-4/5 rounded-lg bg-default-200"></div>
+                  <div className="h-3 w-4/5 rounded-lg bg-default-200" />
                 </Skeleton>
                 <Skeleton className="w-2/5 rounded-lg">
-                  <div className="h-3 w-2/5 rounded-lg bg-default-300"></div>
+                  <div className="h-3 w-2/5 rounded-lg bg-default-300" />
                 </Skeleton>
               </div>
               <h3>Select a contact to start chatting</h3>
@@ -253,13 +258,13 @@ const Chat: React.FC = () => {
           <div className="flex gap-2">
             <Textarea
               isRequired
-              placeholder="Type your message here..."
               className="max-w h-10 flex-grow"
+              placeholder="Type your message here..."
               value={messageText}
               onChange={(e) => setMessageText(e.target.value)}
               onKeyDown={handleKeyDown}
             />
-            <Button onClick={handleSendMessage} variant="ghost" color="primary">
+            <Button color="primary" variant="ghost" onClick={handleSendMessage}>
               Send
             </Button>
           </div>

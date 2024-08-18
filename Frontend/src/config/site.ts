@@ -2,7 +2,8 @@ export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
   name: "BitsChat",
-  description: "Share codes and chat easily with your friends or team.Now Debugging is easy with BitsChat",
+  description:
+    "Share codes and chat easily with your friends or team.Now Debugging is easy with BitsChat",
   navItems: [
     {
       label: "Home",

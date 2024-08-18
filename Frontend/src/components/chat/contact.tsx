@@ -8,6 +8,7 @@ import {
   Avatar,
 } from "@nextui-org/react";
 import axios from "axios";
+
 import { Chat } from "./chatpage";
 
 interface ChatProps {
@@ -24,6 +25,7 @@ const Contacts: React.FC<ChatProps> = ({ onSelectContact }) => {
     setIsLoading(true);
     try {
       const userToken = localStorage.getItem("userInfo");
+
       if (!userToken) {
         throw new Error("User token not found in local storage");
       }
@@ -37,6 +39,7 @@ const Contacts: React.FC<ChatProps> = ({ onSelectContact }) => {
         },
       });
       const searchResults = response.data;
+
       setChat(searchResults);
     } catch (error) {
       console.error("Error fetching search results:", error);
@@ -46,6 +49,7 @@ const Contacts: React.FC<ChatProps> = ({ onSelectContact }) => {
 
   const handleAction = (index: number) => {
     const selectedChat = chats[index];
+
     onSelectContact(selectedChat);
   };
 
@@ -57,7 +61,7 @@ const Contacts: React.FC<ChatProps> = ({ onSelectContact }) => {
 
   useEffect(() => {
     handleSearch("");
-  });
+  }, []);
 
   return (
     <>
@@ -79,7 +83,7 @@ const Contacts: React.FC<ChatProps> = ({ onSelectContact }) => {
         {isLoading ? (
           <>
             <div className="flex justify-center">
-              <Spinner label="Loading Contacts..." color="warning" />
+              <Spinner color="warning" label="Loading Contacts..." />
             </div>
             {Array.from({ length: 5 }, (_, index) => (
               <div
@@ -101,7 +105,7 @@ const Contacts: React.FC<ChatProps> = ({ onSelectContact }) => {
             {chats.map((chat: Chat, index: number) => (
               <ListboxItem key={index} onClick={() => handleAction(index)}>
                 <div className="grid grid-cols-10 gap-2">
-                  <Avatar src={chat.users[1].pic} className="col-span-2" />
+                  <Avatar className="col-span-2" src={chat.users[1].pic} />
                   <div className="col-span-7">
                     <strong>{chat.users[1].name}</strong>
                     <div className="flex justify-between">

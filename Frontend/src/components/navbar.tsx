@@ -92,7 +92,7 @@ const Navbar: React.FC<NavbarProps> = ({ onLogout }) => {
           <ThemeSwitch />
         </NavbarItem>
         {/* <NavbarItem className="hidden lg:flex">{searchInput}</NavbarItem> */}
-        <Button onClick={onLogout} color="danger" variant="solid">
+        <Button color="danger" variant="solid" onClick={onLogout}>
           Logout
         </Button>
       </NavbarContent>

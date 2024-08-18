@@ -1,7 +1,9 @@
 import { Route, Routes } from "react-router-dom";
 import React from "react";
 import { BrowserRouter } from "react-router-dom";
+
 import { Provider } from "../provider";
+
 import "@/styles/globals.css";
 import IndexPage from "@/pages/mainPage";
 import DocsPage from "@/pages/docs";

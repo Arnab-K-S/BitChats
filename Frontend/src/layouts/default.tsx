@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "@nextui-org/link";
+
 import Navbar from "@/components/navbar";
 
 interface DefaultProps {
