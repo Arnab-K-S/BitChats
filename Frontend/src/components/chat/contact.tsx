@@ -20,12 +20,12 @@ const Contacts: React.FC<ChatProps> = ({ onSelectContact }) => {
   const [chats, setChat] = useState<Chat[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [isLoading, setIsLoading] = useState(true);
+  const userToken = localStorage.getItem("userInfo");
+  const [userId, setUserId] = useState<string | null>(null);
 
   const handleSearch = async (search: string) => {
     setIsLoading(true);
     try {
-      const userToken = localStorage.getItem("userInfo");
-
       if (!userToken) {
         throw new Error("User token not found in local storage");
       }
@@ -39,7 +39,7 @@ const Contacts: React.FC<ChatProps> = ({ onSelectContact }) => {
         },
       });
       const searchResults = response.data;
-
+      setUserId(userInfo._id);
       setChat(searchResults);
     } catch (error) {
       console.error("Error fetching search results:", error);
@@ -105,9 +105,20 @@ const Contacts: React.FC<ChatProps> = ({ onSelectContact }) => {
             {chats.map((chat: Chat, index: number) => (
               <ListboxItem key={index} onClick={() => handleAction(index)}>
                 <div className="grid grid-cols-10 gap-2">
-                  <Avatar className="col-span-2" src={chat.users[1].pic} />
+                  <Avatar
+                    className="col-span-2"
+                    src={
+                      chat.users[1]._id != userId
+                        ? chat.users[1].pic
+                        : chat.users[0].pic
+                    }
+                  />
                   <div className="col-span-7">
-                    <strong>{chat.users[1].name}</strong>
+                    <strong>
+                      {chat.users[1]._id != userId
+                        ? chat.users[1].name
+                        : chat.users[0].name}
+                    </strong>
                     <div className="flex justify-between">
                       <p className="text-blue-800">
                         {new Date(chat.updatedAt).toLocaleDateString([], {

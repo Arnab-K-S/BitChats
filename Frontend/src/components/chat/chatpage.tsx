@@ -63,10 +63,10 @@ const Chat: React.FC = () => {
 
   const languages = ["Text", "C++", "C", "Javascript", "Java", "Python"];
 
-  useEffect(() => {
-    const userInfo = JSON.parse(localStorage.getItem("userInfo") || "null");
+  const userInfo = JSON.parse(localStorage.getItem("userInfo") || "null");
 
-    if (userInfo && userInfo) {
+  useEffect(() => {
+    if (userInfo) {
       setCurrentUser(userInfo);
     }
   }, []);
@@ -74,11 +74,11 @@ const Chat: React.FC = () => {
   useEffect(() => {
     if (selectedChat) {
       setChatmode(true);
-      setOnline(true); // temp using to avoid eslint error
       fetchMessages(selectedChat._id);
     } else {
       setChatmode(false);
     }
+    setOnline(true);
   }, [selectedChat, messageText, selectedContact]);
 
   const fetchMessages = async (chatId: string) => {
@@ -89,7 +89,6 @@ const Chat: React.FC = () => {
             Authorization: `Bearer ${currentUser?.token}`,
           },
         });
-
         setMessages(response.data);
       } catch (error) {
         console.error("Error fetching messages:", error);
@@ -121,15 +120,11 @@ const Chat: React.FC = () => {
           }
         );
 
-        setMessages([...messages, ...response.data]);
-        console.log(response.data);
+        setMessages([...messages, response.data]);
+        selectedChat.latestMessage = response.data;
       } catch (error) {
         console.error("Error sending message:", error);
       }
-      selectedChat.latestMessage = {
-        content: messageText,
-        language: language,
-      };
       setMessageText("");
       setLanguage("Text");
     }
@@ -144,6 +139,16 @@ const Chat: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    if (selectedChat) {
+      const contact =
+        selectedChat.users[0]._id === currentUser?._id
+          ? selectedChat.users[1]
+          : selectedChat.users[0];
+      setSelectedContact(contact);
+    }
+  }, [selectedChat, currentUser]);
+
   return (
     <div className="flex space-x-2 justify-start w-full h-full">
       <Card className="w-96">
@@ -156,49 +161,52 @@ const Chat: React.FC = () => {
         <CardBody className="overflow-hidden">
           {chatmode && selectedChat && messages && currentUser ? (
             <>
-              <div className="namebar flex gap-4">
-                {online ? (
-                  <Badge
-                    className="text-white"
-                    color="success"
-                    content="online"
-                    placement="bottom-right"
-                    shape="circle"
-                  >
-                    <Avatar
-                      className="m-0 p-0"
-                      radius="full"
-                      src={selectedChat.users[1].pic}
-                    />
-                  </Badge>
-                ) : (
-                  <Badge
-                    className="text-white"
-                    color="danger"
-                    content="offline"
-                    placement="bottom-right"
-                    shape="circle"
-                  >
-                    <Avatar radius="full" src={selectedChat.users[1].pic} />
-                  </Badge>
-                )}
-                <h6 className="text-2xl">{selectedChat.users[1].name}</h6>
-                <div className="ml-auto">
-                  <Select
-                    className="w-32 float-right"
-                    label="Syntax"
-                    placeholder="text"
-                    value={language}
-                    onChange={(e) => setLanguage(e.target.value)}
-                  >
-                    {languages.map((lang) => (
-                      <SelectItem key={lang} value={lang}>
-                        {lang}
-                      </SelectItem>
-                    ))}
-                  </Select>
+              {selectedContact && (
+                <div className="namebar flex gap-4">
+                  {online ? (
+                    <Badge
+                      className="text-white"
+                      color="success"
+                      content="online"
+                      placement="bottom-right"
+                      shape="circle"
+                    >
+                      <Avatar
+                        className="m-0 p-0"
+                        radius="full"
+                        src={selectedContact.pic}
+                      />
+                    </Badge>
+                  ) : (
+                    <Badge
+                      className="text-white"
+                      color="danger"
+                      content="offline"
+                      placement="bottom-right"
+                      shape="circle"
+                    >
+                      <Avatar radius="full" src={selectedContact.pic} />
+                    </Badge>
+                  )}
+                  <h6 className="text-2xl">{selectedContact.name}</h6>
+                  <div className="ml-auto">
+                    <Select
+                      className="w-32 float-right"
+                      label="Syntax"
+                      placeholder="text"
+                      value={language}
+                      onChange={(e) => setLanguage(e.target.value)}
+                    >
+                      {languages.map((lang) => (
+                        <SelectItem key={lang} value={lang}>
+                          {lang}
+                        </SelectItem>
+                      ))}
+                    </Select>
+                  </div>
                 </div>
-              </div>
+              )}
+
               <Divider className="my-4" />
               <div className="textcontainer h-80 p-2 flex flex-col overflow-y-auto">
                 {messages.map((message) => (
@@ -211,8 +219,8 @@ const Chat: React.FC = () => {
                     }`}
                   >
                     {message.language &&
-                    message.language != "text" &&
-                    message.language != "Text" ? (
+                    message.language !== "Text" &&
+                    message.language !== "text" ? (
                       <Snippet symbol="" variant="bordered">
                         <SyntaxHighlighter
                           language={message.language}
@@ -225,8 +233,8 @@ const Chat: React.FC = () => {
                       <MessageBox
                         color={
                           message?.sender?._id === currentUser?._id
-                            ? "bg-slate-200 text-black"
-                            : "bg-blue-500 text-white"
+                            ? "bg-slate-200 text-black dark:text-white dark:bg-slate-500"
+                            : "bg-blue-500 text-white dark:text-white dark:bg-violet-800"
                         }
                         text={message.content}
                         variant="shadow"
@@ -258,6 +266,7 @@ const Chat: React.FC = () => {
           <div className="flex gap-2">
             <Textarea
               isRequired
+              maxRows={1}
               className="max-w h-10 flex-grow"
               placeholder="Type your message here..."
               value={messageText}

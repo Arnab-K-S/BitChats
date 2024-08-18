@@ -15,7 +15,10 @@ interface MessageBoxProps {
     | "solid"
     | "light"
     | undefined;
-  color: "bg-slate-200 text-black" | "bg-blue-500 text-white" | undefined;
+  color:
+    | "bg-slate-200 text-black dark:text-white dark:bg-slate-500"
+    | "bg-blue-500 text-white dark:text-white dark:bg-violet-800"
+    | undefined;
   text: string;
 }
 
@@ -28,7 +31,7 @@ const MessageBox: React.FC<MessageBoxProps> = ({ variant, color, text }) => {
     <div>
       <Dropdown>
         <DropdownTrigger>
-          <div className={`p-2 rounded max-w-96 ${color}`}>
+          <div className={`p-2 rounded-lg max-w-96 ${color}`}>
             <p>{text}</p>
           </div>
         </DropdownTrigger>
